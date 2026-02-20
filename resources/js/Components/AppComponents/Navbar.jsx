@@ -1,162 +1,196 @@
 import { Link, usePage } from "@inertiajs/react";
 import { Inertia } from "@inertiajs/inertia";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ShoppingBag, Menu, X, Search } from "lucide-react";
+
+const navLinks = [
+  { label: "Home", href: "/" },
+  { label: "Catalog", href: "/products" },
+];
 
 export default function Navbar() {
-  const { auth, cartCount } = usePage().props; // auth comes from backend, cartCount can be added
-  const [menuOpen, setMenuOpen] = useState(false);
+  const { auth } = usePage().props;
+
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Close search on ESC
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === "Escape") setSearchOpen(false);
+    };
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, []);
 
   const handleLogout = (e) => {
     e.preventDefault();
     Inertia.post(route("logout"));
   };
 
-  return (
-    <nav className="fixed z-50 w-full bg-white shadow-md dark:bg-black">
-      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo */}
-          <div className="flex-shrink-0">
-            <Link href="/" className="text-2xl font-bold text-black dark:text-white">
-              SOOTH
-            </Link>
-          </div>
+  const buttonStyle =
+    "text-white/80 hover:text-white text-xs tracking-[0.2em] uppercase transition-all duration-300 relative group px-2 py-1";
 
-          {/* Desktop Menu */}
+  return (
+    <>
+      {/* HEADER */}
+      <motion.header
+        className="fixed top-0 left-0 right-0 z-50 bg-black font-body"
+        animate={{ height: scrolled ? 70 : 90 }}
+        transition={{ duration: 0.4 }}
+      >
+        <div className="flex items-center justify-between h-full px-6 lg:px-16">
+          {/* LOGO */}
+          <Link
+            href="/"
+            className="text-white text-2xl tracking-[0.35em] font-heading"
+            style={{ fontFamily: "Playfair Display, serif" }}
+          >
+            SOOTH
+          </Link>
+
+          {/* DESKTOP NAV */}
+          <nav className="items-center hidden gap-10 md:flex">
+            {navLinks.map((link) => (
+              <Link key={link.label} href={link.href} className={buttonStyle}>
+                {link.label}
+                <span className="absolute left-0 -bottom-1 w-0 h-[1px] bg-[#C6A15B] transition-all duration-300 group-hover:w-full" />
+              </Link>
+            ))}
+          </nav>
+
+          {/* RIGHT SIDE */}
           <div className="items-center hidden gap-6 md:flex">
             {!auth?.user ? (
-              <>
-                <Link
-                  href={route("login")}
-                  className="px-4 py-2 transition rounded hover:bg-gray-100 dark:hover:bg-gray-800"
-                >
-                  Login
-                </Link>
-                <Link
-                  href={route("register")}
-                  className="px-4 py-2 transition rounded hover:bg-gray-100 dark:hover:bg-gray-800"
-                >
-                  Register
-                </Link>
-              </>
+              <Link href={route("login")} className={buttonStyle}>
+                Login
+                <span className="absolute left-0 -bottom-1 w-0 h-[1px] bg-[#C6A15B] transition-all duration-300 group-hover:w-full" />
+              </Link>
             ) : (
               <>
-                <Link
-                  href={route("dashboard")}
-                  className="px-4 py-2 transition rounded hover:bg-gray-100 dark:hover:bg-gray-800"
-                >
+                <Link href={route("dashboard")} className={buttonStyle}>
                   Dashboard
+                  <span className="absolute left-0 -bottom-1 w-0 h-[1px] bg-[#C6A15B] transition-all duration-300 group-hover:w-full" />
                 </Link>
-                <button
-                  onClick={handleLogout}
-                  className="px-4 py-2 transition rounded hover:bg-gray-100 dark:hover:bg-gray-800"
-                >
+                <button onClick={handleLogout} className={buttonStyle}>
                   Logout
+                  <span className="absolute left-0 -bottom-1 w-0 h-[1px] bg-[#C6A15B] transition-all duration-300 group-hover:w-full" />
                 </button>
               </>
             )}
 
-            {/* Cart Icon */}
+            {/* SEARCH */}
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="text-white/70 hover:text-[#C6A15B] transition"
+            >
+              <Search size={18} strokeWidth={1.5} />
+            </button>
+
+            {/* CART */}
             <Link href={route("cart")} className="relative">
-              <svg
-                className="w-6 h-6 text-black dark:text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.2 6m1.2-6h10M17 13l1.2 6M6 19a2 2 0 100 4 2 2 0 000-4zm12 0a2 2 0 100 4 2 2 0 000-4z"
-                />
-              </svg>
-              {cartCount > 0 && (
-                <span className="absolute flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 rounded-full -top-2 -right-2">
-                  {cartCount}
-                </span>
-              )}
+              <ShoppingBag size={18} strokeWidth={1.5} className="text-white" />
+              <span className="absolute flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 rounded-full -top-2 -right-2">
+                0
+              </span>
             </Link>
           </div>
 
-          {/* Mobile Menu Button */}
-          <div className="flex items-center md:hidden">
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="text-black dark:text-white focus:outline-none"
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                {menuOpen ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                )}
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="px-4 pt-2 pb-4 space-y-1 bg-white shadow-md md:hidden dark:bg-black">
-          {!auth?.user ? (
-            <>
-              <Link
-                href={route("login")}
-                className="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
-              >
-                Login
-              </Link>
-              <Link
-                href={route("register")}
-                className="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
-              >
-                Register
-              </Link>
-            </>
-          ) : (
-            <>
-              <Link
-                href={route("dashboard")}
-                className="block px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
-              >
-                Dashboard
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="block w-full px-4 py-2 text-left rounded hover:bg-gray-100 dark:hover:bg-gray-800"
-              >
-                Logout
-              </button>
-            </>
-          )}
-
-          <Link
-            href={route("cart")}
-            className="flex items-center px-4 py-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+          {/* MOBILE BUTTON */}
+          <button
+            className="text-white md:hidden"
+            onClick={() => setMobileOpen(true)}
           >
-            Cart {cartCount > 0 && <span className="ml-2 text-red-500">{cartCount}</span>}
-          </Link>
+            <Menu size={20} />
+          </button>
         </div>
-      )}
-    </nav>
+      </motion.header>
+
+      {/* MOBILE MENU */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ x: "100%", opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: "100%", opacity: 0 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            className="fixed inset-0 z-[60] bg-black flex flex-col items-center justify-center"
+          >
+            <button
+              className="absolute text-white top-8 right-6"
+              onClick={() => setMobileOpen(false)}
+            >
+              <X size={24} />
+            </button>
+
+            <nav className="flex flex-col items-center gap-8">
+              {[...navLinks, { label: "Cart", href: route("cart") }].map(
+                (link) => (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="text-white text-2xl tracking-[0.15em] uppercase relative group"
+                  >
+                    {link.label}
+                    <span className="absolute left-0 -bottom-1 w-0 h-[1px] bg-[#C6A15B] transition-all duration-300 group-hover:w-full" />
+                  </Link>
+                )
+              )}
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* SEARCH OVERLAY */}
+      <AnimatePresence>
+        {searchOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-[70] bg-black/95 backdrop-blur-sm flex items-center justify-center"
+          >
+            <button
+              onClick={() => setSearchOpen(false)}
+              className="absolute top-8 right-8 text-white/70 hover:text-white"
+            >
+              <X size={28} />
+            </button>
+
+            <motion.div
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 20, opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className="w-full max-w-2xl px-6"
+            >
+              <input
+                type="text"
+                autoFocus
+                placeholder="Search products..."
+                className="
+                  w-full bg-transparent
+                  border-b border-white/30
+                  text-white text-3xl tracking-wide
+                  placeholder:text-white/40
+                  focus:outline-none focus:border-[#C6A15B]
+                  py-4
+                "
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

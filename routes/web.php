@@ -24,4 +24,23 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+
+
+
+
+// New Cart route
+Route::get('/cart', function () {
+    return Inertia::render('Cart');
+})->name('cart');
+
+
+
+
+// netstat -ano | findstr :3306
+// taskkill /PID 6348 /F
+
+// ln -s ../laravel_app/storage/app/public ../public_html/storage
+
+
 require __DIR__.'/auth.php';
