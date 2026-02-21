@@ -93,32 +93,50 @@ class ProductCatalogController extends Controller
     /**
      * Single product page
      */
-    public function show(string $slug)
-    {
-        $product = Product::with(['category', 'subcategory'])
-            ->where('slug', $slug)
-            ->firstOrFail();
+public function show(string $slug)
+{
+    $product = Product::with(['category', 'subcategory'])
+        ->where('slug', $slug)
+        ->firstOrFail();
 
-        $images = array_filter([
-            $product->image_1,
-            $product->image_2,
-            $product->image_3,
-            $product->image_4,
-            $product->image_5,
+    // Product images
+    $images = array_filter([
+        $product->image_1,
+        $product->image_2,
+        $product->image_3,
+        $product->image_4,
+        $product->image_5,
+    ]);
+
+    // 🔹 Related products (max 4)
+    $relatedProducts = Product::where('id', '!=', $product->id)
+        ->where('category_id', $product->category_id)
+        ->where('status', 'in_stock')
+        ->latest()
+        ->limit(4)
+        ->get()
+        ->map(fn ($item) => [
+            'id' => $item->id,
+            'name' => $item->name,
+            'slug' => $item->slug,
+            'price' => $item->price,
+            'status' => $item->status,
+            'image' => $item->image_1,
         ]);
 
-        return Inertia::render('ProductShow', [
-            'product' => [
-                'id' => $product->id,
-                'name' => $product->name,
-                'slug' => $product->slug,
-                'price' => $product->price,
-                'status' => $product->status,
-                'description' => $product->description,
-                'category' => $product->category->name ?? null,
-                'subcategory' => $product->subcategory->name ?? null,
-                'images' => $images,
-            ],
-        ]);
-    }
+    return Inertia::render('ProductShow', [
+        'product' => [
+            'id' => $product->id,
+            'name' => $product->name,
+            'slug' => $product->slug,
+            'price' => $product->price,
+            'status' => $product->status,
+            'description' => $product->description,
+            'category' => $product->category->name ?? null,
+            'subcategory' => $product->subcategory->name ?? null,
+            'images' => $images,
+        ],
+        'relatedProducts' => $relatedProducts,
+    ]);
+}
 }
