@@ -38,7 +38,7 @@ Route::get('/cart', function () {
 
 
 // netstat -ano | findstr :3306
-// taskkill /PID 6348 /F
+// taskkill /PID 5800 /F
 
 // ln -s ../laravel_app/storage/app/public ../public_html/storage
 
