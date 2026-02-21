@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -34,7 +35,7 @@ Route::get('/cart', function () {
     return Inertia::render('Cart');
 })->name('cart');
 
-
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 
 // netstat -ano | findstr :3306
