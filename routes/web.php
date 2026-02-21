@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProductCatalogController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,13 @@ Route::get('/cart', function () {
 })->name('cart');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+
+// Product catalog
+Route::get('/products', [ProductCatalogController::class, 'index'])->name('products.index');
+
+// Single product page
+Route::get('/products/{slug}', [ProductCatalogController::class, 'show'])->name('products.show');
 
 
 // netstat -ano | findstr :3306

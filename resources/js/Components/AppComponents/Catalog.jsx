@@ -42,7 +42,7 @@ const CategoryCard = ({ category, index }) => {
 const CatalogSection = ({ categories = [] }) => {
     const ref = useRef(null);
     const inView = useInView(ref, { once: true, margin: "-50px" });
-// console.log("CATEGORIES:", categories);
+    // console.log("CATEGORIES:", categories);
     return (
         <section id="catalog" className="py-24 md:py-32 bg-background">
             <div className="container px-6 lg:px-12">
@@ -56,7 +56,7 @@ const CatalogSection = ({ categories = [] }) => {
                     Explore Collection
                 </motion.h2>
 
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-4 md:gap-6">
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
                     {categories.map((category, i) => (
                         <CategoryCard
                             key={category.id}
@@ -65,7 +65,6 @@ const CatalogSection = ({ categories = [] }) => {
                         />
                     ))}
                 </div>
-                
             </div>
         </section>
     );

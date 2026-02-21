@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
 
         // Call CategorySeeder to seed fashion categories and subcategories
         $this->call(\Database\Seeders\CategorySeeder::class);
+        $this->call(\Database\Seeders\ProductSeeder::class);
     }
 }
