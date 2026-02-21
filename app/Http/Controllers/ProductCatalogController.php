@@ -3,18 +3,63 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Category;
 use Inertia\Inertia;
+use Illuminate\Http\Request;
 
 class ProductCatalogController extends Controller
 {
     /**
-     * Product catalog with pagination
+     * Product catalog with server-side filters and pagination
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::with(['category', 'subcategory'])
-            ->latest()
-            ->paginate(12)
+        // Get filter values from request
+        $availability = $request->input('availability', 'all'); // 'all', 'in_stock', 'out_of_stock'
+        $priceFrom = $request->input('price_from');
+        $priceTo = $request->input('price_to');
+        $sortOrder = $request->input('sort', 'alphabetical'); // 'alphabetical', 'price_low', 'price_high'
+        $categorySlug = $request->input('category'); // optional
+
+        // Start query
+        $query = Product::with(['category', 'subcategory']);
+
+        // Filter by availability
+        if ($availability === 'in_stock') {
+            $query->where('status', 'in_stock');
+        } elseif ($availability === 'out_of_stock') {
+            $query->where('status', 'out_of_stock');
+        }
+
+        // Filter by price
+        if (!is_null($priceFrom)) {
+            $query->where('price', '>=', $priceFrom);
+        }
+        if (!is_null($priceTo)) {
+            $query->where('price', '<=', $priceTo);
+        }
+
+        // Filter by category
+        if ($categorySlug) {
+            $query->whereHas('category', function ($q) use ($categorySlug) {
+                $q->where('slug', $categorySlug);
+            });
+        }
+
+        // Sort
+        if ($sortOrder === 'alphabetical') {
+            $query->orderBy('name', 'asc');
+        } elseif ($sortOrder === 'price_low') {
+            $query->orderBy('price', 'asc');
+        } elseif ($sortOrder === 'price_high') {
+            $query->orderBy('price', 'desc');
+        } else {
+            $query->latest();
+        }
+
+        // Pagination
+        $products = $query->paginate(12)
+            ->withQueryString() // keep filters on pagination links
             ->through(fn ($product) => [
                 'id' => $product->id,
                 'name' => $product->name,
@@ -29,8 +74,19 @@ class ProductCatalogController extends Controller
                 'image_5' => $product->image_5,
             ]);
 
+        // Fetch all categories (name + slug)
+        $categories = Category::select('name', 'slug')->get();
+
         return Inertia::render('ProductCatalog', [
             'products' => $products,
+            'categories' => $categories,
+            'filters' => [
+                'availability' => $availability,
+                'price_from' => $priceFrom,
+                'price_to' => $priceTo,
+                'sort' => $sortOrder,
+                'category' => $categorySlug,
+            ],
         ]);
     }
 
@@ -43,7 +99,6 @@ class ProductCatalogController extends Controller
             ->where('slug', $slug)
             ->firstOrFail();
 
-        // Build images array for all 5 images
         $images = array_filter([
             $product->image_1,
             $product->image_2,
