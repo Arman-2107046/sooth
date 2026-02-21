@@ -14,7 +14,7 @@ class ProductCatalogController extends Controller
     {
         $products = Product::with(['category', 'subcategory'])
             ->latest()
-            ->paginate(12)   // ✅ 12 products per page
+            ->paginate(12)
             ->through(fn ($product) => [
                 'id' => $product->id,
                 'name' => $product->name,
@@ -24,6 +24,9 @@ class ProductCatalogController extends Controller
                 'is_featured' => $product->is_featured,
                 'image_1' => $product->image_1,
                 'image_2' => $product->image_2,
+                'image_3' => $product->image_3,
+                'image_4' => $product->image_4,
+                'image_5' => $product->image_5,
             ]);
 
         return Inertia::render('ProductCatalog', [
@@ -32,7 +35,7 @@ class ProductCatalogController extends Controller
     }
 
     /**
-     * Single product page (unchanged)
+     * Single product page
      */
     public function show(string $slug)
     {
@@ -40,8 +43,27 @@ class ProductCatalogController extends Controller
             ->where('slug', $slug)
             ->firstOrFail();
 
+        // Build images array for all 5 images
+        $images = array_filter([
+            $product->image_1,
+            $product->image_2,
+            $product->image_3,
+            $product->image_4,
+            $product->image_5,
+        ]);
+
         return Inertia::render('ProductShow', [
-            'product' => $product,
+            'product' => [
+                'id' => $product->id,
+                'name' => $product->name,
+                'slug' => $product->slug,
+                'price' => $product->price,
+                'status' => $product->status,
+                'description' => $product->description,
+                'category' => $product->category->name ?? null,
+                'subcategory' => $product->subcategory->name ?? null,
+                'images' => $images,
+            ],
         ]);
     }
 }
