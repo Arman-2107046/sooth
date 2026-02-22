@@ -16,6 +16,11 @@ class ProductsTable
     {
         return $table
             ->columns([
+
+                // ✅ PRODUCT ID
+                TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable(),
                 TextColumn::make('category.name') // use relationship
                     ->label('Category')
                     ->sortable(),
