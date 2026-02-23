@@ -61,7 +61,7 @@ const Cart = () => {
                             Your cart
                         </h1>
                         <a
-                            href="#"
+                            href="/products"
                             className="text-sm font-medium text-gray-600 hover:underline"
                         >
                             Continue shopping

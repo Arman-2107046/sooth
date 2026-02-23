@@ -229,7 +229,7 @@ const CategoryWiseProduct = ({ category, products }) => {
             </aside>
 
             {/* ================= PRODUCTS GRID ================= */}
-            <div className="grid flex-1 grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            <div className="grid flex-1 grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
               {products.data?.length > 0 ? (
                 products.data.map((product) => (
                   <ProductCard
