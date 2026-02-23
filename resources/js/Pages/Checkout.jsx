@@ -69,7 +69,7 @@ const Checkout = () => {
                 name: item.name,
                 quantity: item.quantity,
                 price: item.price,
-                // image: item.image,
+                image: item.image,
             })),
             subtotal,
             shipping_method: SHIPPING_OPTIONS[shippingMethod].label,

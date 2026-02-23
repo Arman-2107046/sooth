@@ -52,7 +52,7 @@ const OrderSuccess = () => {
         <p className="pt-4 mt-4 text-xs text-gray-500 border-t border-gray-200">
           Need help? Email{" "}
           <a href="mailto:support@example.com" className="underline">
-            support@example.com
+            support@soothbangladesh.com
           </a>
         </p>
       </div>
