@@ -12,8 +12,16 @@
 
         <!-- Scripts -->
         @routes
-        @viteReactRefresh
-        @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
+
+        @if(app()->environment('local'))
+            {{-- Only enable React Fast Refresh & Vite dev server in local --}}
+            @viteReactRefresh
+            @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
+        @else
+            {{-- Load production-built assets --}}
+            @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
+        @endif
+
         @inertiaHead
     </head>
     <body class="font-sans antialiased">

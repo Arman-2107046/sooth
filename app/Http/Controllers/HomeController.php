@@ -4,24 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Blog;
 use Inertia\Inertia;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        // Active categories
+        // ================= ACTIVE CATEGORIES =================
         $categories = Category::where('is_active', true)
             ->select('id', 'name', 'slug', 'thumbnail')
             ->orderBy('id')
             ->get();
 
-        // Featured products
+        // ================= FEATURED PRODUCTS =================
         $featuredProducts = Product::with(['category', 'subcategory'])
-            // ->where('status', 'in_stock')      // only available products
-            ->where('is_featured', true)        // only featured
-            ->where('status', 'in_stock')     // exclude out-of-stock
-
+            ->where('is_featured', true)
+            ->where('status', 'in_stock')
             ->latest()
             ->get()
             ->map(function ($product) {
@@ -35,15 +34,13 @@ class HomeController extends Controller
                     'subcategory' => $product->subcategory->name ?? null,
                 ];
             })
-            ->toArray(); // <-- important: convert Collection to array
+            ->toArray();
 
-        // New products (max 8, exclude featured)
+        // ================= NEW PRODUCTS =================
         $newProducts = Product::with(['category', 'subcategory'])
-            ->where('is_featured', false) // exclude featured
-            ->where('status', 'in_stock')     // exclude out-of-stock
-
+            ->where('is_featured', false)
+            ->where('status', 'in_stock')
             ->latest()
-
             ->take(8)
             ->get()
             ->map(function ($product) {
@@ -61,10 +58,40 @@ class HomeController extends Controller
             })
             ->toArray();
 
+        // ================= LATEST 3 BLOG POSTS =================
+        $latestBlogs = Blog::where('is_published', true)
+            ->latest('published_at')
+            ->take(3)
+            ->get()
+            ->map(function ($blog) {
+                return [
+                    'id' => $blog->id,
+                    'title' => $blog->title,
+                    'slug' => $blog->slug,
+                    'excerpt' => $blog->excerpt,
+                    'thumbnail' => $blog->thumbnail,
+                    'category' => $blog->category,
+                    'published_at' => $blog->published_at,
+                ];
+            })
+            ->toArray();
+
+        // ================= BLOG CATEGORIES =================
+        $blogCategories = [
+            'clothing' => 'Clothing',
+            'fashion_trends' => 'Fashion Trends',
+            'style_guides' => 'Style Guides',
+            'lifestyle' => 'Lifestyle',
+            'others' => 'Others',
+        ];
+
+        // ================= RETURN TO INERTIA =================
         return Inertia::render('Welcome', [
             'categories' => $categories,
             'featuredProducts' => $featuredProducts,
             'newProducts' => $newProducts,
+            'latestBlogs' => $latestBlogs,
+            'blogCategories' => $blogCategories,
         ]);
     }
 }

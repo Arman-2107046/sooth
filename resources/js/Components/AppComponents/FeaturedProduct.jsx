@@ -20,7 +20,8 @@ const FeaturedProduct = ({ featuredProducts }) => {
             key={product.id}
             name={product.name}
             price={product.price}
-            image={product.image_1}
+            // Prepend storage path to make the image accessible
+            image={`/storage/${product.image_1}` }
             slug={product.slug}
             status={product.status}
             is_featured={product.is_featured ? 1 : 0}

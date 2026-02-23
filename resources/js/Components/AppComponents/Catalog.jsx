@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Link } from "@inertiajs/react";
 
-// Single category card
+// Single Category Card
 const CategoryCard = ({ category, index }) => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
@@ -19,19 +19,20 @@ const CategoryCard = ({ category, index }) => {
       }}
     >
       <Link
-        href={`/category/${category.slug}`} // 🔹 Links to category-specific page
+        href={`/category/${category.slug}`} // Links to category-specific page
         className="relative group cursor-pointer overflow-hidden aspect-[3/4] block"
       >
+        {/* Category Image */}
         <img
-          src={category.thumbnail}
+          src={`/storage/${category.thumbnail}`} // Load image from Laravel storage
           alt={category.name}
           className="object-cover w-full h-full transition-transform duration-700 ease-out group-hover:scale-105"
         />
 
-        {/* overlay on hover */}
+        {/* Overlay on hover */}
         <div className="absolute inset-0 transition-colors duration-500 bg-black/30 group-hover:bg-black/50" />
 
-        {/* category name */}
+        {/* Category Name */}
         <div className="absolute inset-0 flex items-center justify-center">
           <h3 className="font-heading text-white text-2xl md:text-3xl tracking-[0.15em] group-hover:-translate-y-2 transition-transform duration-500">
             {category.name}
@@ -50,7 +51,7 @@ const CatalogSection = ({ categories = [] }) => {
   return (
     <section id="catalog" className="py-24 md:py-32 bg-background">
       <div className="container px-6 lg:px-12">
-        {/* Section title */}
+        {/* Section Title */}
         <motion.h2
           ref={ref}
           initial={{ opacity: 0, y: 20 }}
@@ -61,7 +62,7 @@ const CatalogSection = ({ categories = [] }) => {
           Explore Collection
         </motion.h2>
 
-        {/* Responsive grid: 2 cols mobile, 3 cols tablet, 4 cols desktop */}
+        {/* Responsive Grid */}
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:gap-6">
           {categories.length > 0 ? (
             categories.map((category, i) => (

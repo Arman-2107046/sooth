@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryWiseProduct;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
@@ -68,6 +69,13 @@ Route::get('/category/{slug}', [CategoryWiseProduct::class, 'show'])->name('cate
 Route::get('/products/{slug}', [ProductCatalogController::class, 'show'])->name('products.show');
 
 Route::middleware('auth')->post('/orders', [OrderController::class, 'store']);
+
+
+    Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
+    Route::get('/blogs/{slug}', [BlogController::class, 'show'])->name('blogs.show');
+
+
+
 // netstat -ano | findstr :3306
 // taskkill /PID 18064 /F
 
