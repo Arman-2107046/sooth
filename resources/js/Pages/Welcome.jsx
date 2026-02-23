@@ -14,7 +14,7 @@ const Welcome = ({ categories,featuredProducts,newProducts }) => {
       <CatalogSection categories={categories} />
       <FeaturedProduct featuredProducts={featuredProducts}/>
       <NewProducts newProducts={newProducts}/>
-      <Footer/>
+      <Footer />
     </div>
   )
 }

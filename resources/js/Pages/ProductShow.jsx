@@ -21,14 +21,16 @@ const ProductShow = ({ product, relatedProducts }) => {
     );
   }
 
+  // Prepend /storage/ to all images for proper URL
+  const images = product.images.map((img) => `/storage/${img}`);
+
   // State hooks
-  const [selectedImage, setSelectedImage] = useState(product.images[0]);
+  const [selectedImage, setSelectedImage] = useState(images[0]);
   const [quantity, setQuantity] = useState(1);
-  const [miniCartItem, setMiniCartItem] = useState(null); // ✅ mini cart state
+  const [miniCartItem, setMiniCartItem] = useState(null);
 
   const incrementQuantity = () => setQuantity(quantity + 1);
-  const decrementQuantity = () =>
-    setQuantity(quantity > 1 ? quantity - 1 : 1);
+  const decrementQuantity = () => setQuantity(quantity > 1 ? quantity - 1 : 1);
 
   const handleAddToCart = () => {
     const item = {
@@ -38,7 +40,7 @@ const ProductShow = ({ product, relatedProducts }) => {
       image: selectedImage,
     };
     addToCart(item, quantity);
-    setMiniCartItem(item); // ✅ show mini cart
+    setMiniCartItem(item);
   };
 
   const handleBuyNow = () => {
@@ -72,7 +74,7 @@ const ProductShow = ({ product, relatedProducts }) => {
 
               {/* Thumbnails */}
               <div className="flex gap-3 pb-2 overflow-x-auto">
-                {product.images.map((img, idx) => (
+                {images.map((img, idx) => (
                   <motion.div
                     key={idx}
                     className={`flex-shrink-0 w-16 h-16 md:w-20 md:h-20 overflow-hidden cursor-pointer border-2 transition-all ${
@@ -112,7 +114,10 @@ const ProductShow = ({ product, relatedProducts }) => {
               <div className="space-y-2">
                 <p className="text-sm font-medium text-gray-700">Quantity</p>
                 <div className="flex items-center border w-fit">
-                  <button className="w-10 h-10 text-lg" onClick={decrementQuantity}>
+                  <button
+                    className="w-10 h-10 text-lg"
+                    onClick={decrementQuantity}
+                  >
                     −
                   </button>
                   <input
@@ -121,16 +126,19 @@ const ProductShow = ({ product, relatedProducts }) => {
                     readOnly
                     className="w-12 h-10 text-center border-0 focus:ring-0"
                   />
-                  <button className="w-10 h-10 text-lg" onClick={incrementQuantity}>
+                  <button
+                    className="w-10 h-10 text-lg"
+                    onClick={incrementQuantity}
+                  >
                     +
                   </button>
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-col gap-2">
+              <div className="flex flex-col gap-2 sm:flex-row sm:gap-4">
                 <button
-                  className={`w-1/2 px-5 py-2.5 text-sm font-medium border-2 border-black ${
+                  className={`px-5 py-2.5 text-sm font-medium border-2 border-black w-full sm:w-auto ${
                     product.status === "out_of_stock"
                       ? "bg-gray-200 cursor-not-allowed text-gray-500 border-gray-400"
                       : "bg-white text-black hover:bg-gray-100"
@@ -138,12 +146,14 @@ const ProductShow = ({ product, relatedProducts }) => {
                   disabled={product.status === "out_of_stock"}
                   onClick={handleAddToCart}
                 >
-                  {product.status === "out_of_stock" ? "Out of Stock" : "Add to Cart"}
+                  {product.status === "out_of_stock"
+                    ? "Out of Stock"
+                    : "Add to Cart"}
                 </button>
 
                 {product.status !== "out_of_stock" && (
                   <button
-                    className="w-1/2 px-5 py-2.5 text-sm font-medium text-white bg-black hover:bg-gray-800"
+                    className="px-5 py-2.5 text-sm font-medium text-white bg-black hover:bg-gray-800 w-full sm:w-auto"
                     onClick={handleBuyNow}
                   >
                     Buy It Now
@@ -171,10 +181,14 @@ const ProductShow = ({ product, relatedProducts }) => {
 
               <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
                 {relatedProducts.map((item) => (
-                  <a key={item.id} href={`/products/${item.slug}`} className="group">
+                  <a
+                    key={item.id}
+                    href={`/products/${item.slug}`}
+                    className="group"
+                  >
                     <div className="overflow-hidden bg-white border">
                       <img
-                        src={item.image}
+                        src={`/storage/${item.image}`}
                         alt={item.name}
                         className="object-cover w-full h-56 transition-transform group-hover:scale-105"
                       />

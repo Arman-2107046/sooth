@@ -1,6 +1,9 @@
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
-const Footer = ({ categories = [] }) => {
+const Footer = () => {
+  // ✅ Access global categories shared via middleware
+  const { categories = [] } = usePage().props;
+
   const supportLinks = [
     { label: "Contact", href: "/contact" },
     { label: "Returns", href: "/returns" },
@@ -14,23 +17,23 @@ const Footer = ({ categories = [] }) => {
   ];
 
   return (
-    <footer className="py-20 border-t bg-background border-border">
-      <div className="container px-6 lg:px-12">
+    <footer className="py-16 bg-white border-t border-gray-200">
+      <div className="px-6 mx-auto max-w-7xl lg:px-12">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-4 md:gap-16">
 
           {/* Brand */}
           <div>
-            <h4 className="font-heading text-foreground text-2xl tracking-[0.25em] mb-4">
+            <h4 className="mb-4 text-2xl font-bold tracking-widest text-gray-900">
               SOOTH
             </h4>
-            <p className="max-w-xs text-sm leading-relaxed font-body text-muted-foreground">
+            <p className="max-w-xs text-sm leading-relaxed text-gray-600">
               Redefining modern luxury through minimal design, premium materials, and timeless silhouettes.
             </p>
           </div>
 
-          {/* Shop */}
+          {/* Shop - Dynamic Categories */}
           <div>
-            <h5 className="font-body text-foreground text-xs tracking-[0.2em] uppercase mb-6 font-medium">
+            <h5 className="mb-6 text-xs font-medium tracking-wider text-gray-900 uppercase">
               Shop
             </h5>
             <ul className="space-y-3">
@@ -38,22 +41,22 @@ const Footer = ({ categories = [] }) => {
                 categories.map((category) => (
                   <li key={category.id}>
                     <Link
-                      href={`/products/${category.slug}`}
-                      className="text-sm font-body text-muted-foreground hover:text-[#C6A15B] transition-colors duration-300"
+                      href={`/category/${category.slug}`} // ✅ Dynamic route works globally
+                      className="text-sm text-gray-600 transition-colors duration-300 hover:text-gray-900"
                     >
                       {category.name}
                     </Link>
                   </li>
                 ))
               ) : (
-                <li className="text-sm font-body text-muted-foreground">No categories</li>
+                <li className="text-sm text-gray-400">No categories available</li>
               )}
             </ul>
           </div>
 
           {/* Support */}
           <div>
-            <h5 className="font-body text-foreground text-xs tracking-[0.2em] uppercase mb-6 font-medium">
+            <h5 className="mb-6 text-xs font-medium tracking-wider text-gray-900 uppercase">
               Support
             </h5>
             <ul className="space-y-3">
@@ -61,7 +64,7 @@ const Footer = ({ categories = [] }) => {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm font-body text-muted-foreground hover:text-[#C6A15B] transition-colors duration-300"
+                    className="text-sm text-gray-600 transition-colors duration-300 hover:text-gray-900"
                   >
                     {link.label}
                   </Link>
@@ -72,7 +75,7 @@ const Footer = ({ categories = [] }) => {
 
           {/* Company */}
           <div>
-            <h5 className="font-body text-foreground text-xs tracking-[0.2em] uppercase mb-6 font-medium">
+            <h5 className="mb-6 text-xs font-medium tracking-wider text-gray-900 uppercase">
               Company
             </h5>
             <ul className="space-y-3">
@@ -80,7 +83,7 @@ const Footer = ({ categories = [] }) => {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm font-body text-muted-foreground hover:text-[#C6A15B] transition-colors duration-300"
+                    className="text-sm text-gray-600 transition-colors duration-300 hover:text-gray-900"
                   >
                     {link.label}
                   </Link>
@@ -88,11 +91,12 @@ const Footer = ({ categories = [] }) => {
               ))}
             </ul>
           </div>
+
         </div>
 
         {/* Bottom */}
-        <div className="flex flex-col items-center justify-between gap-4 pt-8 mt-16 border-t border-border md:flex-row">
-          <p className="font-body text-muted-foreground text-xs tracking-[0.1em]">
+        <div className="flex flex-col items-center justify-between gap-4 pt-8 mt-16 border-t border-gray-200 md:flex-row">
+          <p className="text-xs tracking-wide text-gray-500">
             © {new Date().getFullYear()} SOOTH. All rights reserved.
           </p>
 
@@ -103,7 +107,7 @@ const Footer = ({ categories = [] }) => {
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-body text-muted-foreground text-xs tracking-[0.1em] hover:text-[#C6A15B] transition-colors duration-300"
+                className="text-xs text-gray-500 transition-colors duration-300 hover:text-gray-900"
               >
                 {social}
               </a>

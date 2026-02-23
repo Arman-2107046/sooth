@@ -52,7 +52,7 @@ const ProductCard = ({
           />
 
           {/* ADD TO CART */}
-          {!isOutOfStock && (
+          {/* {!isOutOfStock && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: hovered ? 1 : 0 }}
@@ -66,7 +66,7 @@ const ProductCard = ({
                 Add to Cart
               </button>
             </motion.div>
-          )}
+          )} */}
         </div>
 
         <h3 className="font-body text-foreground text-sm tracking-[0.05em] font-light">

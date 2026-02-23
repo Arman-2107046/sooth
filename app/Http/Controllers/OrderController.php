@@ -45,10 +45,11 @@ class OrderController extends Controller
                 'payment_method' => $request->payment_method,
             ],
         ]);
+    return redirect()->route('order.success'); // Make sure this route exists
 
-        return response()->json([
-            'success' => true,
-            'order_id' => $order->id,
-        ]);
+        // return response()->json([
+        //     'success' => true,
+        //     'order_id' => $order->id,
+        // ]);
     }
 }

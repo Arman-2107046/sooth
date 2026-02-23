@@ -46,6 +46,10 @@ Route::get('/checkout', function () {
     return Inertia::render('Checkout');
 })->name('checkout');
 
+Route::get('/order-success', function () {
+    return Inertia::render('OrderSuccess');
+})->name('order.success');
+
 Route::get('/', [HomeController::class, 'index'])->name(name: 'home');
 
 
