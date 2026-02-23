@@ -169,7 +169,7 @@ const ProductCatalog = ({ products, categories }) => {
                             </div>
 
                             {/* Price */}
-                            <div className="mb-4">
+                            {/* <div className="mb-4">
                                 <h3 className="mb-2 font-medium">Price</h3>
                                 <input
                                     type="number"
@@ -197,7 +197,7 @@ const ProductCatalog = ({ products, categories }) => {
                                     className="w-full px-2 py-1 border border-gray-300"
                                     style={{ borderRadius: 0 }}
                                 />
-                            </div>
+                            </div> */}
 
                             {/* Sort */}
                             <div>
@@ -231,7 +231,7 @@ const ProductCatalog = ({ products, categories }) => {
                                         key={product.id}
                                         name={product.name}
                                         price={product.price}
-                                        image={product.image_1}
+                                        image={`/storage/${product.image_1}`}
                                         slug={product.slug}
                                         status={product.status}
                                         is_featured={product.is_featured}

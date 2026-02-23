@@ -25,49 +25,50 @@ const BlogSection = ({ latestBlogs = [], categories = {} }) => {
         {/* Blog Grid */}
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3 md:gap-10">
           {latestBlogs.map((blog, i) => (
-            <motion.article
+            <motion.div
               key={blog.id}
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: i * 0.15 }}
-              className="cursor-pointer group"
             >
-              {/* Thumbnail */}
-              <div className="overflow-hidden aspect-[4/3] mb-6 rounded-xl bg-gray-100">
-                {blog.thumbnail ? (
-                  <img
-                    src={`/storage/${blog.thumbnail}`}
-                    alt={blog.title}
-                    className="object-cover w-full h-full transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-200" />
-                )}
-              </div>
-
-              {/* Category */}
-              <div className="mb-1 text-xs font-semibold tracking-wide text-blue-600 uppercase">
-                {categories[blog.category]}
-              </div>
-
-              {/* Title */}
-              <h3 className="font-heading text-foreground text-xl tracking-[0.05em] mb-3 group-hover:-translate-y-1 transition-transform duration-400">
-                {blog.title}
-              </h3>
-
-              {/* Excerpt */}
-              <p className="mb-4 text-sm leading-relaxed font-body text-muted-foreground line-clamp-3">
-                {blog.excerpt}
-              </p>
-
-              {/* Read more */}
               <Link
                 href={route("blogs.show", blog.slug)}
-                className="hover-underline-gold font-body text-foreground text-xs tracking-[0.15em] uppercase pb-1"
+                className="block cursor-pointer group"
               >
-                Read More
+                {/* Thumbnail */}
+                <div className="overflow-hidden aspect-[4/3] mb-6  bg-gray-100">
+                  {blog.thumbnail ? (
+                    <img
+                      src={`/storage/${blog.thumbnail}`}
+                      alt={blog.title}
+                      className="object-cover w-full h-full transition-transform duration-700 ease-out group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-200" />
+                  )}
+                </div>
+
+                {/* Category */}
+                <div className="mb-1 text-xs font-semibold tracking-wide text-blue-600 uppercase">
+                  {categories[blog.category]}
+                </div>
+
+                {/* Title */}
+                <h3 className="font-heading text-foreground text-xl tracking-[0.05em] mb-3 group-hover:-translate-y-1 transition-transform duration-400">
+                  {blog.title}
+                </h3>
+
+                {/* Excerpt */}
+                <p className="mb-4 text-sm leading-relaxed font-body text-muted-foreground line-clamp-3">
+                  {blog.excerpt}
+                </p>
+
+                {/* Optional: "Read More" */}
+                <span className="hover-underline-gold font-body text-foreground text-xs tracking-[0.15em] uppercase pb-1">
+                  Read More
+                </span>
               </Link>
-            </motion.article>
+            </motion.div>
           ))}
         </div>
       </div>

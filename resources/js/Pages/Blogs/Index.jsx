@@ -8,20 +8,20 @@ export default function Index({ blogs, categories, activeCategory }) {
             <Navbar />
 
             {/* ================= HERO ================= */}
-            <section className="bg-white border-b">
+            <section className="bg-white border-b mt-[4rem]">
                 <div className="px-6 py-24 mx-auto max-w-7xl">
                     <div className="grid items-end gap-12 md:grid-cols-2">
                         {/* Left */}
-                        <h1 className="text-6xl font-extrabold leading-tight text-blue-900">
-                            News & <br /> Updates
+                        <h1 className="text-6xl font-bold leading-tight text-black">
+                            News & <br /> Media
                         </h1>
 
                         {/* Right */}
-                        <div className="text-right">
+                        {/* <div className="text-right">
                             <p className="mb-3 text-lg text-gray-600">
                                 Stay informed with the latest news and updates.
                             </p>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             </section>

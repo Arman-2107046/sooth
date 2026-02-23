@@ -42,6 +42,18 @@ Route::get('/cart', function () {
     return Inertia::render('Cart');
 })->name('cart');
 
+Route::get('/privacy', function () {
+    return Inertia::render('PrivacyPolicy');
+})->name('privacy.policy');
+
+Route::get('/terms', function () {
+    return Inertia::render('Terms');
+})->name('terms');
+
+Route::get('/contact', function () {
+    return Inertia::render('Contact');
+})->name('contact');
+
 
 Route::get('/checkout', function () {
     return Inertia::render('Checkout');
@@ -71,8 +83,8 @@ Route::get('/products/{slug}', [ProductCatalogController::class, 'show'])->name(
 Route::middleware('auth')->post('/orders', [OrderController::class, 'store']);
 
 
-    Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
-    Route::get('/blogs/{slug}', [BlogController::class, 'show'])->name('blogs.show');
+Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
+Route::get('/blogs/{slug}', [BlogController::class, 'show'])->name('blogs.show');
 
 
 
@@ -82,4 +94,4 @@ Route::middleware('auth')->post('/orders', [OrderController::class, 'store']);
 // ln -s ../laravel_app/storage/app/public ../public_html/storage
 
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

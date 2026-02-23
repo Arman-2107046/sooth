@@ -21,11 +21,11 @@ export default function Show({ blog, relatedBlogs = [], categories }) {
     };
 
     return (
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-white mt-[4rem]">
             <Navbar />
 
             {/* ================= ARTICLE ================= */}
-            <article className="px-6 py-20 mx-auto max-w-7xl">
+            <article className="max-w-5xl px-6 py-20 mx-auto">
                 {/* Category */}
                 <span className="inline-block mb-4 text-xs font-semibold tracking-wide text-blue-700 uppercase">
                     {categories[blog.category]}
@@ -125,10 +125,10 @@ export default function Show({ blog, relatedBlogs = [], categories }) {
                 {/* Back */}
                 <div className="pt-10 mt-12 border-t">
                     <Link
-                        href={route("blogs.index")}
+                        href={'/blogs'}
                         className="inline-flex items-center gap-2 text-xs font-semibold tracking-wide text-gray-600 uppercase hover:text-gray-900"
                     >
-                        ← Back to all articles
+                        ← Back to all Blogs
                     </Link>
                 </div>
             </article>
