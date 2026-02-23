@@ -26,6 +26,7 @@
         "@heroicons/react": "^2.2.0",
         "@inertiajs/inertia": "^0.11.1",
         "framer-motion": "^12.34.1",
+        "html-react-parser": "^5.2.17",
         "lucide-react": "^0.574.0"
     }
 }
