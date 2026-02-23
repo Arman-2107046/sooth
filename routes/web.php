@@ -40,7 +40,12 @@ Route::get('/cart', function () {
     return Inertia::render('Cart');
 })->name('cart');
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/checkout', function () {
+    return Inertia::render('Checkout');
+})->name('checkout');
+
+Route::get('/', [HomeController::class, 'index'])->name(name: 'home');
 
 
 // Product catalog

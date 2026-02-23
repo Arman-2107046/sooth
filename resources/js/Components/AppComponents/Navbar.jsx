@@ -98,9 +98,9 @@ export default function Navbar() {
             {/* CART */}
             <Link href={route("cart")} className="relative">
               <ShoppingBag size={18} strokeWidth={1.5} className="text-white" />
-              <span className="absolute flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 rounded-full -top-2 -right-2">
+              {/* <span className="absolute flex items-center justify-center w-5 h-5 text-xs text-white bg-red-500 rounded-full -top-2 -right-2">
                 0
-              </span>
+              </span> */}
             </Link>
           </div>
 
