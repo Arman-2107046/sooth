@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryWiseProduct;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductCatalogController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
@@ -62,7 +63,7 @@ Route::get('/category/{slug}', [CategoryWiseProduct::class, 'show'])->name('cate
 // Single product page
 Route::get('/products/{slug}', [ProductCatalogController::class, 'show'])->name('products.show');
 
-
+Route::middleware('auth')->post('/orders', [OrderController::class, 'store']);
 // netstat -ano | findstr :3306
 // taskkill /PID 18064 /F
 

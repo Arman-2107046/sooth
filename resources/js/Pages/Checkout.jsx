@@ -4,18 +4,12 @@ import Footer from "@/Components/AppComponents/Footer";
 import { router, usePage } from "@inertiajs/react";
 
 const SHIPPING_OPTIONS = {
-    inside_dhaka: {
-        label: "Inside Dhaka",
-        price: 60,
-    },
-    outside_dhaka: {
-        label: "Outside of Dhaka",
-        price: 120,
-    },
+    inside_dhaka: { label: "Inside Dhaka", price: 60 },
+    outside_dhaka: { label: "Outside of Dhaka", price: 120 },
 };
 
 const Checkout = () => {
-    const { auth } = usePage().props; // get authenticated user info
+    const { auth } = usePage().props; // authenticated user info
     const [cartItems, setCartItems] = useState([]);
     const [shippingMethod, setShippingMethod] = useState("inside_dhaka");
 
@@ -29,7 +23,7 @@ const Checkout = () => {
         postal_code: "",
     });
 
-    /* ───────── Load Cart ───────── */
+    // ───────── Load Cart ─────────
     useEffect(() => {
         const storedCart = localStorage.getItem("sooth_cart");
         if (!storedCart) return router.visit("/cart");
@@ -43,38 +37,34 @@ const Checkout = () => {
         }
     }, []);
 
-    /* ───────── Calculations ───────── */
+    // ───────── Calculations ─────────
     const subtotal = cartItems.reduce(
         (sum, item) => sum + item.price * item.quantity,
         0
     );
-
     const totalQuantity = cartItems.reduce(
         (sum, item) => sum + item.quantity,
         0
     );
-
     const shippingCost = SHIPPING_OPTIONS[shippingMethod].price;
     const total = subtotal + shippingCost;
 
-    /* ───────── Handlers ───────── */
-    const handleChange = (e) => {
+    // ───────── Handlers ─────────
+    const handleChange = (e) =>
         setForm({ ...form, [e.target.name]: e.target.value });
-    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Check if user is logged in
         if (!auth?.user) {
             alert("⚠️ Please log in to place an order!");
-            router.visit("/login"); // optional: redirect to login page
+            router.visit("/login");
             return;
         }
 
         const payload = {
             customer: form,
-            items: cartItems.map(item => ({
+            items: cartItems.map((item) => ({
                 id: item.id,
                 name: item.name,
                 quantity: item.quantity,
@@ -91,11 +81,10 @@ const Checkout = () => {
 
         console.log("ORDER PAYLOAD:", payload);
 
-        // Post order to backend
         router.post("/orders", payload, {
             onSuccess: () => {
-                localStorage.removeItem("sooth_cart"); // clear cart after success
-                router.visit("/order-success"); // optional: redirect to success page
+                localStorage.removeItem("sooth_cart"); // clear cart
+                router.visit("/order-success"); // redirect to success page
             },
         });
     };
@@ -139,7 +128,6 @@ const Checkout = () => {
                             {/* Delivery */}
                             <div className="space-y-4">
                                 <h2 className="text-lg font-semibold">Delivery</h2>
-
                                 <div className="grid grid-cols-2 gap-4">
                                     <input
                                         type="text"
@@ -160,7 +148,6 @@ const Checkout = () => {
                                         className="px-4 py-3 border rounded-md"
                                     />
                                 </div>
-
                                 <input
                                     type="text"
                                     name="address"
@@ -170,7 +157,6 @@ const Checkout = () => {
                                     onChange={handleChange}
                                     className="w-full px-4 py-3 border rounded-md"
                                 />
-
                                 <div className="grid grid-cols-2 gap-4">
                                     <input
                                         type="text"
@@ -195,13 +181,14 @@ const Checkout = () => {
                             {/* Shipping */}
                             <div className="space-y-3">
                                 <h2 className="text-lg font-semibold">Shipping method</h2>
-
                                 {Object.entries(SHIPPING_OPTIONS).map(([key, option]) => (
                                     <label
                                         key={key}
-                                        className={`flex items-center justify-between p-4 border rounded-md cursor-pointer transition
-                                            ${shippingMethod === key ? "border-blue-500 bg-blue-50" : "hover:bg-gray-50"}
-                                        `}
+                                        className={`flex items-center justify-between p-4 border rounded-md cursor-pointer transition ${
+                                            shippingMethod === key
+                                                ? "border-blue-500 bg-blue-50"
+                                                : "hover:bg-gray-50"
+                                        }`}
                                     >
                                         <div className="flex items-center gap-3">
                                             <input
@@ -262,7 +249,6 @@ const Checkout = () => {
                                     <span>Subtotal ({totalQuantity} items)</span>
                                     <span>৳{subtotal.toLocaleString()}</span>
                                 </div>
-
                                 <div className="flex justify-between">
                                     <span>Shipping</span>
                                     <span>৳{shippingCost}</span>

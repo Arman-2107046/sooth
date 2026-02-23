@@ -25,12 +25,12 @@ class OrderForm
                     ->numeric(),
                 Select::make('delivery_status')
                     ->options([
-            'pending' => 'Pending',
-            'processing' => 'Processing',
-            'shipped' => 'Shipped',
-            'delivered' => 'Delivered',
-            'cancelled' => 'Cancelled',
-        ])
+                        'pending' => 'Pending',
+                        'processing' => 'Processing',
+                        'shipped' => 'Shipped',
+                        'delivered' => 'Delivered',
+                        'cancelled' => 'Cancelled',
+                    ])
                     ->default('pending')
                     ->required(),
                 Select::make('payment_status')
@@ -38,8 +38,10 @@ class OrderForm
                     ->default('pending')
                     ->required(),
                 Textarea::make('order_summary')
-                    ->required()
-                    ->columnSpanFull(),
+                    ->label('Order Summary')
+                    ->columnSpanFull()
+                    ->disabled() // optional: read-only
+                    ->formatStateUsing(fn($state) => json_encode($state, JSON_PRETTY_PRINT))
             ]);
     }
 }

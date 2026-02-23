@@ -15,13 +15,17 @@ class Order extends Model
         'total_quantity',
         'delivery_status',
         'payment_status',
-        'order_summary'
+        'order_summary',
     ];
 
-    // Cast order_summary to array automatically
+    /**
+     * Cast order_summary to array automatically for easy JSON handling,
+     * and total_price as decimal.
+     */
     protected $casts = [
-        'order_summary' => 'array',
+        'order_summary' => 'array',   // ✅ important for Filament to read nested JSON
         'total_price' => 'decimal:2',
+        'total_quantity' => 'integer',
     ];
 
     /**
@@ -29,6 +33,22 @@ class Order extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(related: User::class);
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Optional helper to get order items easily
+     */
+    public function getItemsAttribute()
+    {
+        return $this->order_summary['items'] ?? [];
+    }
+
+    /**
+     * Optional helper to get customer info easily
+     */
+    public function getCustomerAttribute()
+    {
+        return $this->order_summary['customer'] ?? [];
     }
 }
