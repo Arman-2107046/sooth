@@ -14,7 +14,7 @@ const NewProducts = ({ newProducts }) => {
       </h2>
 
       {/* Products Grid */}
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-w-[1400px] mx-auto">
+      <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 max-w-[1400px] mx-auto">
         {newProducts.map((product) => (
           <ProductCard
             key={product.id}

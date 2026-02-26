@@ -4,7 +4,7 @@ import Footer from "@/Components/AppComponents/Footer";
 import { router, usePage } from "@inertiajs/react";
 
 const SHIPPING_OPTIONS = {
-    inside_dhaka: { label: "Inside Dhaka", price: 60 },
+    inside_dhaka: { label: "Inside Dhaka", price: 80 },
     outside_dhaka: { label: "Outside of Dhaka", price: 120 },
 };
 
