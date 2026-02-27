@@ -5,6 +5,7 @@ import { useState } from "react";
 const ProductCard = ({
   name,
   price,
+  old_price = null, // ✅ added
   image,
   slug,
   is_featured = 0,
@@ -29,7 +30,6 @@ const ProductCard = ({
         className={isOutOfStock ? "pointer-events-none" : "block"}
       >
         <div className="relative overflow-hidden bg-secondary mb-4 aspect-[3/4]">
-
           {/* BADGES */}
           {is_featured === 1 && !isOutOfStock && (
             <span className="absolute top-4 left-4 z-10 bg-accent text-primary text-[10px] tracking-[0.2em] uppercase font-body font-medium px-3 py-1">
@@ -50,35 +50,28 @@ const ProductCard = ({
               !isOutOfStock ? "group-hover:scale-105" : ""
             }`}
           />
-
-          {/* ADD TO CART */}
-          {/* {!isOutOfStock && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: hovered ? 1 : 0 }}
-              transition={{ duration: 0.3 }}
-              className="absolute bottom-0 left-0 right-0 p-4"
-            >
-              <button
-                type="button"
-                className="w-full py-3 bg-primary text-primary-foreground text-xs tracking-[0.2em] uppercase font-body font-light hover:bg-accent hover:text-primary transition-colors duration-300"
-              >
-                Add to Cart
-              </button>
-            </motion.div>
-          )} */}
         </div>
 
         <h3 className="font-body text-foreground text-sm tracking-[0.05em] font-light">
           {name}
         </h3>
 
-        <p className="mt-1 text-sm font-body text-muted-foreground">
-          ৳ {price}
-        </p>
+        {/* PRICE */}
+        <div className="flex items-center gap-2 mt-1">
+          {old_price && old_price > price && (
+            <span className="text-sm line-through font-body text-muted-foreground">
+              ৳ {old_price}
+            </span>
+          )}
+
+          <span className="text-sm font-body text-foreground">
+            ৳ {price}
+          </span>
+        </div>
       </Link>
     </motion.div>
   );
 };
 
 export default ProductCard;
+

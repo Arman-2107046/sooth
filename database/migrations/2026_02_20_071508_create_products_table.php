@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('description');
 
             // Price (BDT)
+            $table->unsignedBigInteger('old_price')->nullable(); // ✅ OLD PRICE
             $table->unsignedBigInteger('price');
 
             // Stock

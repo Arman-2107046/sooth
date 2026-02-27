@@ -22,19 +22,20 @@ class HomeController extends Controller
             ->where('is_featured', true)
             ->where('status', 'in_stock')
             ->latest()
+            ->take(8) // optional limit for homepage
             ->get()
-            ->map(function ($product) {
-                return [
-                    'id' => $product->id,
-                    'name' => $product->name,
-                    'slug' => $product->slug,
-                    'price' => $product->price,
-                    'image_1' => $product->image_1,
-                    'category' => $product->category->name ?? null,
-                    'subcategory' => $product->subcategory->name ?? null,
-                ];
-            })
-            ->toArray();
+            ->map(fn($product) => [
+                'id' => $product->id,
+                'name' => $product->name,
+                'slug' => $product->slug,
+                'price' => $product->price,
+                'old_price' => $product->old_price, // include old price
+                'image_1' => $product->image_1,
+                'category' => $product->category->name ?? null,
+                'subcategory' => $product->subcategory->name ?? null,
+                'status' => $product->status,
+                'is_featured' => $product->is_featured,
+            ]);
 
         // ================= NEW PRODUCTS =================
         $newProducts = Product::with(['category', 'subcategory'])
@@ -43,38 +44,33 @@ class HomeController extends Controller
             ->latest()
             ->take(8)
             ->get()
-            ->map(function ($product) {
-                return [
-                    'id' => $product->id,
-                    'name' => $product->name,
-                    'slug' => $product->slug,
-                    'price' => $product->price,
-                    'image_1' => $product->image_1,
-                    'category' => $product->category->name ?? null,
-                    'subcategory' => $product->subcategory->name ?? null,
-                    'status' => $product->status,
-                    'is_featured' => $product->is_featured,
-                ];
-            })
-            ->toArray();
+            ->map(fn($product) => [
+                'id' => $product->id,
+                'name' => $product->name,
+                'slug' => $product->slug,
+                'price' => $product->price,
+                'old_price' => $product->old_price,
+                'image_1' => $product->image_1,
+                'category' => $product->category->name ?? null,
+                'subcategory' => $product->subcategory->name ?? null,
+                'status' => $product->status,
+                'is_featured' => $product->is_featured,
+            ]);
 
         // ================= LATEST 3 BLOG POSTS =================
         $latestBlogs = Blog::where('is_published', true)
             ->latest('published_at')
             ->take(3)
             ->get()
-            ->map(function ($blog) {
-                return [
-                    'id' => $blog->id,
-                    'title' => $blog->title,
-                    'slug' => $blog->slug,
-                    'excerpt' => $blog->excerpt,
-                    'thumbnail' => $blog->thumbnail,
-                    'category' => $blog->category,
-                    'published_at' => $blog->published_at,
-                ];
-            })
-            ->toArray();
+            ->map(fn($blog) => [
+                'id' => $blog->id,
+                'title' => $blog->title,
+                'slug' => $blog->slug,
+                'excerpt' => $blog->excerpt,
+                'thumbnail' => $blog->thumbnail,
+                'category' => $blog->category,
+                'published_at' => $blog->published_at,
+            ]);
 
         // ================= BLOG CATEGORIES =================
         $blogCategories = [

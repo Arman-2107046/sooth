@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,7 @@ class Product extends Model
         'name',
         'slug',
         'description',
+        'old_price',
         'price',
         'stock_count',
         'image_1',

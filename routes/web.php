@@ -7,6 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductCatalogController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ShopController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -91,6 +92,7 @@ Route::middleware('auth')->post('/orders', [OrderController::class, 'store']);
 Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
 Route::get('/blogs/{slug}', [BlogController::class, 'show'])->name('blogs.show');
 
+Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 
 Route::middleware(['auth', 'verified'])->group(callback: function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
@@ -101,6 +103,9 @@ Route::middleware(['auth', 'verified'])->group(callback: function () {
 // taskkill /PID 18064 /F
 
 // ln -s ../laravel_app/storage/app/public ../public_html/storage
+
+// for %i in (*.jpg) do magick "%i" -resize 2000x2000^> -quality 80 -strip "%i"
+
 
 
 require __DIR__ . '/auth.php';

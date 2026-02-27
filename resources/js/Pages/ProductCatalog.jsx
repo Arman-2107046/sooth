@@ -101,6 +101,7 @@ const ProductCatalog = ({ products, categories }) => {
   return (
     <>
       <Navbar />
+
       <section className="py-24 bg-white font-inter">
         <div className="w-full px-6 mx-auto max-w-[1400px]">
           <h1 className="mb-8 text-3xl font-medium text-center md:text-4xl">Products</h1>
@@ -122,14 +123,12 @@ const ProductCatalog = ({ products, categories }) => {
             <AnimatePresence>
               {sidebarOpen && (
                 <>
-                  {/* Overlay */}
                   <motion.div
                     className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                   />
-                  {/* Sidebar */}
                   <motion.aside
                     ref={sidebarRef}
                     className="fixed top-0 left-0 z-50 h-full bg-white p-6 shadow-lg w-[70%] max-w-xs"
@@ -160,9 +159,7 @@ const ProductCatalog = ({ products, categories }) => {
                           <Link
                             key={cat.slug}
                             href={`/category/${cat.slug}`}
-                            className={`block px-1 py-1 rounded transition-colors ${
-                              categoryFilter === cat.slug ? "text-primary font-semibold" : "text-gray-700 hover:text-primary"
-                            }`}
+                            className={`block px-1 py-1 rounded transition-colors ${categoryFilter === cat.slug ? "text-primary font-semibold" : "text-gray-700 hover:text-primary"}`}
                             onClick={() => setCategoryFilter(cat.slug)}
                           >
                             {cat.name}
@@ -207,9 +204,7 @@ const ProductCatalog = ({ products, categories }) => {
                     <Link
                       key={cat.slug}
                       href={`/category/${cat.slug}`}
-                      className={`block px-1 py-1 rounded transition-colors ${
-                        categoryFilter === cat.slug ? "text-primary font-semibold" : "text-gray-700 hover:text-primary"
-                      }`}
+                      className={`block px-1 py-1 rounded transition-colors ${categoryFilter === cat.slug ? "text-primary font-semibold" : "text-gray-700 hover:text-primary"}`}
                       onClick={() => setCategoryFilter(cat.slug)}
                     >
                       {cat.name}
@@ -241,7 +236,8 @@ const ProductCatalog = ({ products, categories }) => {
                     key={product.id}
                     name={product.name}
                     price={product.price}
-                    image={`/storage/${product.image_1}`}
+                    old_price={product.old_price} // ✅ fixed
+                    image={`/storage/${product.image}`}
                     slug={product.slug}
                     status={product.status}
                     is_featured={product.is_featured}
@@ -270,15 +266,13 @@ const ProductCatalog = ({ products, categories }) => {
           </div>
         </div>
       </section>
+
       <Footer />
     </>
   );
 };
 
 export default ProductCatalog;
-
-
-
 
 
 

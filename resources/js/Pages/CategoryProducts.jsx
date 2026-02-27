@@ -23,7 +23,6 @@ const CategoryWiseProduct = ({ category, products }) => {
   // ---------------- Sidebar Mobile State ----------------
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const sidebarRef = useRef(null);
-
   const initialRender = useRef(true);
 
   // Update filters whenever state changes
@@ -56,11 +55,7 @@ const CategoryWiseProduct = ({ category, products }) => {
         setSidebarOpen(false);
       }
     };
-    if (sidebarOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
+    if (sidebarOpen) document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [sidebarOpen]);
 
@@ -117,7 +112,8 @@ const CategoryWiseProduct = ({ category, products }) => {
           </h1>
 
           <div className="flex flex-col gap-6 md:flex-row">
-            {/* ================= SIDEBAR TOGGLE BUTTON (MOBILE) ================= */}
+
+            {/* ------------------ MOBILE SIDEBAR TOGGLE ------------------ */}
             <div className="flex items-center justify-between mb-6 md:hidden">
               <h2 className="text-lg font-semibold">Filters</h2>
               <button
@@ -129,21 +125,19 @@ const CategoryWiseProduct = ({ category, products }) => {
               </button>
             </div>
 
-            {/* ================= SIDEBAR ================= */}
+            {/* ------------------ MOBILE SIDEBAR ------------------ */}
             <AnimatePresence>
               {sidebarOpen && (
                 <>
-                  {/* Overlay */}
                   <motion.div
                     className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                   />
-
                   <motion.aside
                     ref={sidebarRef}
-                    className="fixed top-0 left-0 z-50 h-full bg-white p-6 shadow-lg w-[70%] max-w-xs"
+                    className="fixed top-0 left-0 z-50 h-full bg-white p-6 shadow-lg w-[70%] max-w-xs overflow-y-auto"
                     initial={{ x: "-100%" }}
                     animate={{ x: 0 }}
                     exit={{ x: "-100%" }}
@@ -197,7 +191,7 @@ const CategoryWiseProduct = ({ category, products }) => {
               )}
             </AnimatePresence>
 
-            {/* ================= DESKTOP SIDEBAR ================= */}
+            {/* ------------------ DESKTOP SIDEBAR ------------------ */}
             <aside className="flex-shrink-0 hidden w-64 p-2 md:block">
               {category.subcategories?.length > 0 && (
                 <div className="mb-6">
@@ -210,6 +204,7 @@ const CategoryWiseProduct = ({ category, products }) => {
                   </div>
                 </div>
               )}
+
               <div className="mb-4">
                 <h4 className="mb-2 font-medium">Availability</h4>
                 <div className="flex flex-col gap-2">
@@ -218,6 +213,7 @@ const CategoryWiseProduct = ({ category, products }) => {
                   {renderRadioOption("Out of Stock", "out_of_stock", availabilityFilter, setAvailabilityFilter)}
                 </div>
               </div>
+
               <div>
                 <h4 className="mb-2 font-medium">Sort</h4>
                 <div className="flex flex-col gap-2">
@@ -228,30 +224,31 @@ const CategoryWiseProduct = ({ category, products }) => {
               </div>
             </aside>
 
-            {/* ================= PRODUCTS GRID ================= */}
-            <div className="grid flex-1 grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-              {products.data?.length > 0 ? (
-                products.data.map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    name={product.name}
-                    price={product.price}
-                    image={`/storage/${product.image_1}`}
-                    slug={product.slug}
-                    status={product.status}
-                    is_featured={product.is_featured}
-                  />
-                ))
-              ) : (
-                <p className="py-12 text-center text-gray-500 col-span-full">
-                  No products found.
-                </p>
-              )}
+            {/* ------------------ PRODUCTS GRID ------------------ */}
+            <div className="flex-1">
+              <div className="grid grid-cols-2 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                {products.data?.length > 0 ? (
+                  products.data.map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      name={product.name}
+                      price={product.price}
+                      old_price={product.old_price}
+                      image={`/storage/${product.image_1}`}
+                      slug={product.slug}
+                      status={product.status}
+                      is_featured={product.is_featured}
+                    />
+                  ))
+                ) : (
+                  <p className="py-12 text-center text-gray-500 col-span-full">No products found.</p>
+                )}
+              </div>
             </div>
           </div>
 
-          {/* ================= PAGINATION ================= */}
-          <div className="flex flex-wrap justify-center gap-2 mt-16">
+          {/* ------------------ PAGINATION ------------------ */}
+          <div className="flex flex-wrap justify-center gap-2 mt-12">
             {products.links?.map((link, index) => (
               <Link
                 key={index}
@@ -274,6 +271,14 @@ const CategoryWiseProduct = ({ category, products }) => {
 };
 
 export default CategoryWiseProduct;
+
+
+
+
+
+
+
+
 
 
 

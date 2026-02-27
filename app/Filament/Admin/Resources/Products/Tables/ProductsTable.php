@@ -32,6 +32,9 @@ class ProductsTable
                     ->searchable(),
                 TextColumn::make('slug')
                     ->searchable(),
+                TextColumn::make('old_price')
+                    ->money()
+                    ->sortable(),
                 TextColumn::make('price')
                     ->money()
                     ->sortable(),

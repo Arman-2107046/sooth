@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Subcategory;
 use App\Models\Product;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
@@ -37,18 +38,21 @@ class ProductForm
                         return Subcategory::where('category_id', $categoryId)->pluck('name', 'id');
                     })
                     ->required(),
-
-                // Title and slug
                 TextInput::make('name')
                     ->label('Title')
                     ->required()
-                    // ->reactive()
-                    ->afterStateUpdated(function ($state, callable $set) {
-                        $slug = Str::slug($state);
-                        $count = Product::where('slug', 'LIKE', "{$slug}%")->count();
-                        if ($count > 0) {
-                            $slug .= '-' . ($count + 1);
-                        }
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(function ($state, callable $set, $record) {
+                        if (!$state) return;
+
+                        $baseSlug = Str::slug($state);
+
+                        $count = Product::where('slug', 'LIKE', "{$baseSlug}%")
+                            ->when($record, fn($q) => $q->where('id', '!=', $record->id))
+                            ->count();
+
+                        $slug = $count ? "{$baseSlug}-" . ($count + 1) : $baseSlug;
+
                         $set('slug', $slug);
                     }),
 
@@ -57,14 +61,38 @@ class ProductForm
                     ->required()
                     ->unique(ignoreRecord: true),
 
-                Textarea::make('description')
+                // Textarea::make('description')
+                //     ->required()
+                //     ->columnSpanFull(),
+                RichEditor::make('description')
                     ->required()
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->toolbarButtons([
+                        'h1',
+                        'h2',
+                        'h3',
+                        'bold',
+                        'italic',
+                        'bulletList',
+                        'orderedList',
+                        'link',
+                        'blockquote',
+                    ])
+                    ->disableToolbarButtons([
+                        'codeBlock',
+                        'strike',
+                    ]),
+
+
+                TextInput::make('old_price')
+                    ->required()
+                    ->numeric()
+                    ->prefix('BDT'),
 
                 TextInput::make('price')
                     ->required()
                     ->numeric()
-                    ->prefix('$'),
+                    ->prefix('BDT'),
 
                 TextInput::make('stock_count')
                     ->required()
