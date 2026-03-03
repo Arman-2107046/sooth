@@ -115,7 +115,7 @@ const CategoryWiseProduct = ({ category, products }) => {
 
             {/* ------------------ MOBILE SIDEBAR TOGGLE ------------------ */}
             <div className="flex items-center justify-between mb-6 md:hidden">
-              <h2 className="text-lg font-semibold">Filters</h2>
+              <h2 className="text-lg ">Filters</h2>
               <button
                 onClick={() => setSidebarOpen((prev) => !prev)}
                 className="p-2 text-gray-600 transition rounded-md hover:text-gray-900"
@@ -144,7 +144,7 @@ const CategoryWiseProduct = ({ category, products }) => {
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   >
                     <div className="flex items-center justify-between mb-6">
-                      <h3 className="text-lg font-semibold">Filters</h3>
+                      <h3 className="text-lg ">Filters</h3>
                       <button
                         onClick={() => setSidebarOpen(false)}
                         aria-label="Close Filters"
@@ -157,7 +157,7 @@ const CategoryWiseProduct = ({ category, products }) => {
                     {/* Subcategories */}
                     {category.subcategories?.length > 0 && (
                       <div className="mb-6">
-                        <h4 className="mb-2 text-base font-semibold">Subcategories</h4>
+                        <h4 className="mb-2 text-base ">Subcategories</h4>
                         <div className="flex flex-col gap-2">
                           {renderRadioOption("All", "", subcategoryFilter, setSubcategoryFilter)}
                           {category.subcategories.map((sub) =>
@@ -195,7 +195,7 @@ const CategoryWiseProduct = ({ category, products }) => {
             <aside className="flex-shrink-0 hidden w-64 p-2 md:block">
               {category.subcategories?.length > 0 && (
                 <div className="mb-6">
-                  <h3 className="mb-2 text-base font-semibold">Subcategories</h3>
+                  <h3 className="mb-2 text-base ">Subcategories</h3>
                   <div className="flex flex-col gap-2">
                     {renderRadioOption("All", "", subcategoryFilter, setSubcategoryFilter)}
                     {category.subcategories.map((sub) =>

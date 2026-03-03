@@ -31,11 +31,11 @@ const ProductCard = ({
       >
         <div className="relative overflow-hidden bg-secondary mb-4 aspect-[3/4]">
           {/* BADGES */}
-          {is_featured === 1 && !isOutOfStock && (
+          {/* {is_featured === 1 && !isOutOfStock && (
             <span className="absolute top-4 left-4 z-10 bg-accent text-primary text-[10px] tracking-[0.2em] uppercase font-body font-medium px-3 py-1">
               Featured
             </span>
-          )}
+          )} */}
 
           {isOutOfStock && (
             <span className="absolute top-4 left-4 z-10 bg-black text-white text-[10px] tracking-[0.2em] uppercase font-body font-medium px-3 py-1">

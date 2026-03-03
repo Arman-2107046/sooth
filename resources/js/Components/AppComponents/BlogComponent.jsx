@@ -49,7 +49,7 @@ const BlogSection = ({ latestBlogs = [], categories = {} }) => {
                 </div>
 
                 {/* Category */}
-                <div className="mb-1 text-xs font-semibold tracking-wide text-blue-600 uppercase">
+                <div className="mb-1 text-xs tracking-wide text-blue-600 uppercase">
                   {categories[blog.category]}
                 </div>
 

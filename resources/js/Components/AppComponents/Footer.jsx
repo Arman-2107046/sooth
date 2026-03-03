@@ -23,7 +23,7 @@ const Footer = () => {
                 <div className="grid grid-cols-1 gap-12 md:grid-cols-4 md:gap-16">
                     {/* Brand */}
                     <div>
-                        <h4 className="mb-4 text-2xl font-bold tracking-widest text-gray-900">
+                        <h4 className="mb-4 text-2xl tracking-widest text-gray-900">
                             SOOTH
                         </h4>
                         <p className="max-w-xs text-sm leading-relaxed text-gray-600">

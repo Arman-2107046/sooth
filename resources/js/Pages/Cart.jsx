@@ -57,7 +57,7 @@ const Cart = () => {
       <section className="min-h-[90vh] py-12 bg-white mt-[4rem]">
         <div className="container px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div className="flex justify-between mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Your cart</h1>
+            <h1 className="text-3xl text-gray-900">Your cart</h1>
             <a
               href="/products"
               className="text-sm font-medium text-gray-600 hover:underline"
@@ -120,7 +120,7 @@ const Cart = () => {
                       {item.size ? (
                         <p className="text-sm text-gray-600">{item.size}</p>
                       ) : (
-                        <p className="text-sm font-semibold text-red-500">
+                        <p className="text-sm text-red-500">
                           Please select a size!
                         </p>
                       )}
@@ -188,7 +188,7 @@ const Cart = () => {
                 <div className="text-right md:text-left">
                   <p className="text-lg font-medium text-gray-900">
                     Estimated total{" "}
-                    <span className="font-bold">
+                    <span className="">
                       Tk {totalPrice.toLocaleString()} BDT
                     </span>
                   </p>

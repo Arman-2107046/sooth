@@ -104,7 +104,7 @@ const Checkout = () => {
                         >
                             {/* Contact */}
                             <div className="space-y-3">
-                                <h2 className="text-lg font-semibold">Contact</h2>
+                                <h2 className="text-lg ">Contact</h2>
                                 <input
                                     type="email"
                                     name="email"
@@ -127,7 +127,7 @@ const Checkout = () => {
 
                             {/* Delivery */}
                             <div className="space-y-4">
-                                <h2 className="text-lg font-semibold">Delivery</h2>
+                                <h2 className="text-lg ">Delivery</h2>
                                 <div className="grid grid-cols-2 gap-4">
                                     <input
                                         type="text"
@@ -180,7 +180,7 @@ const Checkout = () => {
 
                             {/* Shipping */}
                             <div className="space-y-3">
-                                <h2 className="text-lg font-semibold">Shipping method</h2>
+                                <h2 className="text-lg ">Shipping method</h2>
                                 {Object.entries(SHIPPING_OPTIONS).map(([key, option]) => (
                                     <label
                                         key={key}
@@ -205,7 +205,7 @@ const Checkout = () => {
 
                             {/* Payment */}
                             <div className="space-y-3">
-                                <h2 className="text-lg font-semibold">Payment</h2>
+                                <h2 className="text-lg ">Payment</h2>
                                 <div className="flex items-center gap-3 p-4 border rounded-md bg-gray-50">
                                     <input type="radio" checked readOnly />
                                     <span className="font-medium">Cash on Delivery (COD)</span>
@@ -222,7 +222,7 @@ const Checkout = () => {
 
                         {/* ───────── RIGHT : ORDER SUMMARY ───────── */}
                         <div className="p-6 space-y-4 bg-white rounded-lg shadow-sm md:sticky md:top-24 h-fit">
-                            <h2 className="text-lg font-semibold">Order summary</h2>
+                            <h2 className="text-lg ">Order summary</h2>
 
                             {cartItems.map((item, idx) => (
                                 <div
@@ -238,7 +238,7 @@ const Checkout = () => {
                                         <p className="text-sm font-medium">{item.name}</p>
                                         <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
                                     </div>
-                                    <p className="text-sm font-semibold">
+                                    <p className="text-sm ">
                                         ৳{(item.price * item.quantity).toLocaleString()}
                                     </p>
                                 </div>
@@ -257,7 +257,7 @@ const Checkout = () => {
 
                             <hr />
 
-                            <div className="flex justify-between text-base font-semibold">
+                            <div className="flex justify-between text-base ">
                                 <span>Total</span>
                                 <span>৳{total.toLocaleString()} BDT</span>
                             </div>

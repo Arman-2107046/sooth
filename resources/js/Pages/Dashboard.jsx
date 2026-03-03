@@ -61,7 +61,7 @@ export default function Dashboard({ orders }) {
                                         </p>
                                     </div>
                                     <span
-                                        className={`px-3 py-1 text-sm font-semibold rounded-sm ${statusColors[order.delivery_status]}`}
+                                        className={`px-3 py-1 text-sm  rounded-sm ${statusColors[order.delivery_status]}`}
                                     >
                                         {order.delivery_status.toUpperCase()}
                                     </span>
@@ -80,7 +80,7 @@ export default function Dashboard({ orders }) {
                                                 className="object-cover w-16 h-16"
                                             />
                                             <div className="flex flex-col">
-                                                <p className="text-sm font-semibold">
+                                                <p className="text-sm ">
                                                     {item.name}
                                                 </p>
                                                 <p className="text-xs text-gray-500">
@@ -95,7 +95,7 @@ export default function Dashboard({ orders }) {
                                 </div>
 
                                 {/* Order Total */}
-                                <div className="flex justify-end mt-4 text-sm font-semibold text-gray-700">
+                                <div className="flex justify-end mt-4 text-sm text-gray-700">
                                     Total: ৳{order.total_price}
                                 </div>
                             </div>

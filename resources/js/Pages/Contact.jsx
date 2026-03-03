@@ -30,7 +30,7 @@ const Contact = () => {
 
             <section className="relative px-6 py-24 bg-gradient-to-b from-gray-50 to-white mt-[4rem]">
                 <div className="container max-w-5xl mx-auto">
-                    <h1 className="mb-6 text-4xl font-extrabold tracking-tight text-center md:text-5xl">
+                    <h1 className="mb-6 text-4xl tracking-tight text-center md:text-5xl">
                         Contact Us
                     </h1>
                     <p className="mb-12 text-center text-gray-600">
@@ -42,7 +42,7 @@ const Contact = () => {
                         {/* Contact Info */}
                         <div className="flex flex-col justify-center gap-6">
                             <div>
-                                <h2 className="mb-2 text-xl font-semibold">
+                                <h2 className="mb-2 text-xl ">
                                     Our Address
                                 </h2>
                                 <p className="text-gray-700">
@@ -52,7 +52,7 @@ const Contact = () => {
                             </div>
 
                             <div>
-                                <h2 className="mb-2 text-xl font-semibold">
+                                <h2 className="mb-2 text-xl ">
                                     Email
                                 </h2>
                                 <p className="text-gray-700">
@@ -61,14 +61,14 @@ const Contact = () => {
                             </div>
 
                             <div>
-                                <h2 className="mb-2 text-xl font-semibold">
+                                <h2 className="mb-2 text-xl ">
                                     Phone
                                 </h2>
                                 <p className="text-gray-700">+8801854661046 </p>
                             </div>
 
                             <div>
-                                <h2 className="mb-2 text-xl font-semibold">
+                                <h2 className="mb-2 text-xl ">
                                     Follow Us
                                 </h2>
                                 <div className="flex gap-4 mt-2">
@@ -118,7 +118,7 @@ const Contact = () => {
                         {/* Contact Form */}
                         <div className="p-8 bg-white shadow-lg rounded-xl">
                             {submitted && (
-                                <div className="mb-6 font-semibold text-green-600">
+                                <div className="mb-6 text-green-600">
                                     Your message has been sent successfully!
                                 </div>
                             )}

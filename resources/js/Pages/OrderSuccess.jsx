@@ -24,7 +24,7 @@ const OrderSuccess = () => {
         </div>
 
         {/* Message */}
-        <h2 className="text-2xl font-semibold text-gray-900">Order Confirmed</h2>
+        <h2 className="text-2xl text-gray-900">Order Confirmed</h2>
         <p className="text-gray-700">
           Your order has been successfully placed.
         </p>
