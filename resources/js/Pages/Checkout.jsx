@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "@/Components/AppComponents/Navbar";
 import Footer from "@/Components/AppComponents/Footer";
-import { router, usePage } from "@inertiajs/react";
+import { router } from "@inertiajs/react";
 
 const SHIPPING_OPTIONS = {
     inside_dhaka: { label: "Inside Dhaka", price: 80 },
@@ -9,7 +9,6 @@ const SHIPPING_OPTIONS = {
 };
 
 const Checkout = () => {
-    const { auth } = usePage().props; // get auth info
     const [cartItems, setCartItems] = useState([]);
     const [shippingMethod, setShippingMethod] = useState("inside_dhaka");
 
@@ -40,11 +39,11 @@ const Checkout = () => {
     // ───────── Calculations ─────────
     const subtotal = cartItems.reduce(
         (sum, item) => sum + item.price * item.quantity,
-        0,
+        0
     );
     const totalQuantity = cartItems.reduce(
         (sum, item) => sum + item.quantity,
-        0,
+        0
     );
     const shippingCost = SHIPPING_OPTIONS[shippingMethod].price;
     const total = subtotal + shippingCost;
@@ -56,37 +55,37 @@ const Checkout = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // ✅ Check auth when placing order
-        if (!auth?.user) {
-            alert("⚠️ Please log in to place an order!");
-            router.visit("/login");
-            return;
-        }
+        const username = `${form.first_name} ${form.last_name}`;
 
-        const payload = {
-            customer: form,
-            items: cartItems.map((item) => ({
-                id: item.id,
-                name: item.name,
-                quantity: item.quantity,
-                price: item.price,
-                image: item.image,
-                size: item.size, // optional
-            })),
-            subtotal,
-            shipping_method: SHIPPING_OPTIONS[shippingMethod].label,
-            shipping_cost: shippingCost,
+        const orderPayload = {
+            username: username,
+            email: form.email,
+            phone_number: form.phone,
             total_price: total,
             total_quantity: totalQuantity,
-            payment_method: "COD",
+            delivery_status: "pending",
+            payment_status: "pending",
+            order_summary: {
+                customer: form,
+                items: cartItems.map((item) => ({
+                    id: item.id,
+                    name: item.name,
+                    quantity: item.quantity,
+                    price: item.price,
+                    image: item.image,
+                    size: item.size || null,
+                })),
+                shipping_method: SHIPPING_OPTIONS[shippingMethod].label,
+                shipping_cost: shippingCost,
+            },
         };
 
-        console.log("ORDER PAYLOAD:", payload);
+        console.log("ORDER PAYLOAD:", orderPayload);
 
-        router.post("/orders", payload, {
+        router.post("/orders/create", orderPayload, {
             onSuccess: () => {
                 localStorage.removeItem("sooth_cart"); // clear cart
-                router.visit("/order-success"); // redirect to success page
+                router.visit("/order-success"); // redirect
             },
         });
     };
@@ -281,7 +280,6 @@ export default Checkout;
 
 
 
-
 // import React, { useEffect, useState } from "react";
 // import Navbar from "@/Components/AppComponents/Navbar";
 // import Footer from "@/Components/AppComponents/Footer";
@@ -293,7 +291,7 @@ export default Checkout;
 // };
 
 // const Checkout = () => {
-//     const { auth } = usePage().props; // ✅ get auth info
+//     const { auth } = usePage().props; // get auth info
 //     const [cartItems, setCartItems] = useState([]);
 //     const [shippingMethod, setShippingMethod] = useState("inside_dhaka");
 
@@ -302,18 +300,11 @@ export default Checkout;
 //         phone: "",
 //         first_name: "",
 //         last_name: "",
+        
 //         address: "",
 //         city: "",
 //         postal_code: "",
 //     });
-
-//     // ───────── FORCE AUTH ─────────
-//     useEffect(() => {
-//         if (!auth?.user) {
-//             alert("⚠️ You must be logged in to access checkout!");
-//             router.visit("/login");
-//         }
-//     }, [auth]);
 
 //     // ───────── Load Cart ─────────
 //     useEffect(() => {
@@ -348,6 +339,7 @@ export default Checkout;
 //     const handleSubmit = (e) => {
 //         e.preventDefault();
 
+//         // ✅ Check auth when placing order
 //         if (!auth?.user) {
 //             alert("⚠️ Please log in to place an order!");
 //             router.visit("/login");
@@ -396,9 +388,7 @@ export default Checkout;
 //                         >
 //                             {/* Contact */}
 //                             <div className="space-y-3">
-//                                 <h2 className="text-lg font-semibold">
-//                                     Contact
-//                                 </h2>
+//                                 <h2 className="text-lg font-semibold">Contact</h2>
 //                                 <input
 //                                     type="email"
 //                                     name="email"
@@ -421,9 +411,7 @@ export default Checkout;
 
 //                             {/* Delivery */}
 //                             <div className="space-y-4">
-//                                 <h2 className="text-lg font-semibold">
-//                                     Delivery
-//                                 </h2>
+//                                 <h2 className="text-lg font-semibold">Delivery</h2>
 //                                 <div className="grid grid-cols-2 gap-4">
 //                                     <input
 //                                         type="text"
@@ -476,51 +464,35 @@ export default Checkout;
 
 //                             {/* Shipping */}
 //                             <div className="space-y-3">
-//                                 <h2 className="text-lg font-semibold">
-//                                     Shipping method
-//                                 </h2>
-//                                 {Object.entries(SHIPPING_OPTIONS).map(
-//                                     ([key, option]) => (
-//                                         <label
-//                                             key={key}
-//                                             className={`flex items-center justify-between p-4 border rounded-md cursor-pointer transition ${
-//                                                 shippingMethod === key
-//                                                     ? "border-blue-500 bg-blue-50"
-//                                                     : "hover:bg-gray-50"
-//                                             }`}
-//                                         >
-//                                             <div className="flex items-center gap-3">
-//                                                 <input
-//                                                     type="radio"
-//                                                     checked={
-//                                                         shippingMethod === key
-//                                                     }
-//                                                     onChange={() =>
-//                                                         setShippingMethod(key)
-//                                                     }
-//                                                 />
-//                                                 <span className="font-medium">
-//                                                     {option.label}
-//                                                 </span>
-//                                             </div>
-//                                             <span className="font-medium">
-//                                                 ৳{option.price}
-//                                             </span>
-//                                         </label>
-//                                     ),
-//                                 )}
+//                                 <h2 className="text-lg font-semibold">Shipping method</h2>
+//                                 {Object.entries(SHIPPING_OPTIONS).map(([key, option]) => (
+//                                     <label
+//                                         key={key}
+//                                         className={`flex items-center justify-between p-4 border rounded-md cursor-pointer transition ${
+//                                             shippingMethod === key
+//                                                 ? "border-blue-500 bg-blue-50"
+//                                                 : "hover:bg-gray-50"
+//                                         }`}
+//                                     >
+//                                         <div className="flex items-center gap-3">
+//                                             <input
+//                                                 type="radio"
+//                                                 checked={shippingMethod === key}
+//                                                 onChange={() => setShippingMethod(key)}
+//                                             />
+//                                             <span className="font-medium">{option.label}</span>
+//                                         </div>
+//                                         <span className="font-medium">৳{option.price}</span>
+//                                     </label>
+//                                 ))}
 //                             </div>
 
 //                             {/* Payment */}
 //                             <div className="space-y-3">
-//                                 <h2 className="text-lg font-semibold">
-//                                     Payment
-//                                 </h2>
+//                                 <h2 className="text-lg font-semibold">Payment</h2>
 //                                 <div className="flex items-center gap-3 p-4 border rounded-md bg-gray-50">
 //                                     <input type="radio" checked readOnly />
-//                                     <span className="font-medium">
-//                                         Cash on Delivery (COD)
-//                                     </span>
+//                                     <span className="font-medium">Cash on Delivery (COD)</span>
 //                                 </div>
 //                             </div>
 
@@ -534,9 +506,7 @@ export default Checkout;
 
 //                         {/* ───────── RIGHT : ORDER SUMMARY ───────── */}
 //                         <div className="p-6 space-y-4 bg-white rounded-lg shadow-sm md:sticky md:top-24 h-fit">
-//                             <h2 className="text-lg font-semibold">
-//                                 Order summary
-//                             </h2>
+//                             <h2 className="text-lg font-semibold">Order summary</h2>
 
 //                             {cartItems.map((item, idx) => (
 //                                 <div
@@ -549,27 +519,18 @@ export default Checkout;
 //                                         className="object-cover border rounded-md w-14 h-14"
 //                                     />
 //                                     <div className="flex-1">
-//                                         <p className="text-sm font-medium">
-//                                             {item.name}
-//                                         </p>
-//                                         <p className="text-xs text-gray-500">
-//                                             Qty: {item.quantity}
-//                                         </p>
+//                                         <p className="text-sm font-medium">{item.name}</p>
+//                                         <p className="text-xs text-gray-500">Qty: {item.quantity}</p>
 //                                     </div>
 //                                     <p className="text-sm font-semibold">
-//                                         ৳
-//                                         {(
-//                                             item.price * item.quantity
-//                                         ).toLocaleString()}
+//                                         ৳{(item.price * item.quantity).toLocaleString()}
 //                                     </p>
 //                                 </div>
 //                             ))}
 
 //                             <div className="pt-4 space-y-2 text-sm">
 //                                 <div className="flex justify-between">
-//                                     <span>
-//                                         Subtotal ({totalQuantity} items)
-//                                     </span>
+//                                     <span>Subtotal ({totalQuantity} items)</span>
 //                                     <span>৳{subtotal.toLocaleString()}</span>
 //                                 </div>
 //                                 <div className="flex justify-between">
@@ -595,9 +556,6 @@ export default Checkout;
 // };
 
 // export default Checkout;
-
-
-
 
 
 

@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryWiseProduct;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PlacedOrderController;
 use App\Http\Controllers\ProductCatalogController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShopController;
@@ -94,6 +95,8 @@ Route::get('/blogs/{slug}', [BlogController::class, 'show'])->name('blogs.show')
 
 Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
 
+Route::post('/orders/create', [PlacedOrderController::class, 'store']);
+
 Route::middleware(['auth', 'verified'])->group(callback: function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
@@ -104,7 +107,7 @@ Route::middleware(['auth', 'verified'])->group(callback: function () {
 
 // ln -s ../laravel_app/storage/app/public ../public_html/storage
 
-// for %i in (*.jpg) do magick "%i" -resize 2000x2000^> -quality 80 -strip "%i"
+// for %i in (*.jpg) do magick "%i" -resize 2000x2000^> -quality 50 -strip "%i"
 
 
 
